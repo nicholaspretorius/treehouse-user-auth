@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-8.col-md-offset-2
+        h1.display-4.m-b-2 Register
+        p Please enter your details below. 
+
+        form(action="/register" method="post")
+            label First Name
+                input(type="text")
+
+            label Surname
+                input(type="text")
+
+            label Email Address
+                input(type="email")
+
+            label Password
+                input(type="password")
+
+            input(type="submit" value="Register")
+
+        a.btn.btn-info-outline.btn-lg.m-t-1(href='/') Home
