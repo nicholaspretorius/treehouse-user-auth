@@ -2,9 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const debug = require('debug')('app');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// mongodb connection
+mongoose.connect('mongodb://localhost/bookworm');
+const db = mongoose.connection;
+
+// mongo error
+db.on('error', console.error.bind(console, 'connection error'));
 
 // parse incoming requests
 app.use(bodyParser.json());
