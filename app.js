@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const debug = require('debug')('app');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,6 +15,22 @@ const db = mongoose.connection;
 
 // mongo error
 db.on('error', console.error.bind(console, 'connection error'));
+
+// use sessions for tracking logins
+app.use(session({
+  secret: 'bookworm app',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: db
+  })
+}));
+
+// make user id available in templates
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.userId;
+  next();
+});
 
 // parse incoming requests
 app.use(bodyParser.json());
